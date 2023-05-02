@@ -8,16 +8,13 @@ const btnLogin = document.querySelector(".login__signInButton");
 btnLogin.addEventListener("click", (e) => {
     e.preventDefault();
     if (inputUsername.value === "" || inputPassword.value === "") {
-        alert("Vui lòng không để trống");
+        alert("Vui lòng không để trống!");
     } else {
         const user = JSON.parse(localStorage.getItem(inputUsername.value));
-        if (
-            user.username === inputUsername.value &&
-            user.password === inputPassword.value
-        ) {
+        if (user !== null && user.username === inputUsername.value && user.password === inputPassword.value) {
             window.location.href = "index.html";
         } else {
-            alert("Đăng Nhập Thất Bại");
+            alert("Tên đăng nhập hoặc mật khẩu không đúng!");
         }
     }
 });

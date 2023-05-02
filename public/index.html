@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
+    <link rel="icon" href="favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
@@ -24,23 +25,32 @@
                 <div class="form-control">
                     <label for="room">Phòng</label>
                     <select name="room" id="room">
+                        <option value="" selected disabled>Chọn phòng</option>
                         <option value="1" data-status="available" class="room-option" data-used="false">Phòng 1</option>
                         <option value="2" data-status="available" class="room-option" data-used="false">Phòng 2</option>
                         <option value="3" data-status="available" class="room-option" data-used="false">Phòng 3</option>
                         <option value="4" data-status="available" class="room-option" data-used="false">Phòng 4</option>
+                        <option value="5" data-status="available" class="room-option" data-used="false">Phòng 5</option>
+                        <option value="6" data-status="available" class="room-option" data-used="false">Phòng 6</option>
+                        <option value="7" data-status="available" class="room-option" data-used="false">Phòng 7</option>
+                        <option value="8" data-status="available" class="room-option" data-used="false">Phòng 8</option>
                     </select>
                 </div>
                 <div class="form-control" id="password-container" style="display:none;">
                     <label for="password">Mật khẩu</label>
                     <input style="font-size: 16px;padding: 5px;height: 40px;width: 50%;" type="password" name="password" id="password">
                 </div>
-                <button type="submit" class="btn">Vào phòng chat</button>
+                <div class="btn-container">
+
+                    <button type="button" class="btn1" onclick="confirmExit()">Thoát</button>
+                    <button type="submit" class="btn1">Vào phòng chat</button>
+                </div>
+
             </form>
         </main>
     </div>
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/main.js"></script>
     <script src="js/joinroom.js"></script>
-
 </body>
 
 </html>

@@ -28,6 +28,11 @@ a {
     text-decoration: none;
 }
 
+.btn-container {
+    display: flex;
+    justify-content: space-around;
+}
+
 .btn {
     cursor: pointer;
     padding: 5px 20px;
@@ -36,6 +41,24 @@ a {
     border: 0;
     font-size: 17px;
     border-radius: 5px;
+}
+
+.btn1 {
+    cursor: pointer;
+    padding: 5px 20px;
+    background: var(--light-color);
+    color: var(--dark-color-a);
+    border: 0;
+    font-size: 17px;
+    border-radius: 5px;
+    margin: 0px;
+    width: 40%;
+    margin-top: 15px;
+}
+
+.btn1:hover {
+    background-color: #fdf5dd;
+    color: var(--dark-color-a);
 }
 
 

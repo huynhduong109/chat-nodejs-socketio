@@ -17,8 +17,9 @@ function getUsersRoom(room) {
 function getRoomUsers(room) {
     const usersInRoom = USERS.filter(user => user.room === room);
     const status = usersInRoom.length > 0 ? 'occupied' : 'available';
-    const password = '';
-    return { id: room, status, password };
+    if (status === 'occupied') {
+        return false;
+    } else { return true; }
 }
 
 function userLeave(id) {
@@ -29,19 +30,11 @@ function userLeave(id) {
     }
 }
 
-function setUserStatus(id, status) {
-    const user = getCurrentUser(id);
-    if (user) {
-        user.status = status;
-    }
-}
-
 
 module.exports = {
     storeUser,
     getCurrentUser,
     getUsersRoom,
-    getRoomUsers,
     userLeave,
-    setUserStatus
+    getRoomUsers
 }

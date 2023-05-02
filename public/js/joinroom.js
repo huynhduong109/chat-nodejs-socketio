@@ -1,37 +1,62 @@
 const joinRoomForm = document.querySelector('#join-room-form');
 const roomSelect = document.querySelector('#room');
-const passwordInput = document.querySelector('#password');
-const passwordContainer = document.querySelector('#password-container');
+const passwordInput = document.getElementById('password');
+const passwordContainer = document.getElementById('password-container');
+const submitButton = document.querySelector('button[type="submit"]');
+
+function confirmExit() {
+    if (confirm("Bạn có chắc chắn muốn thoát?")) {
+        window.location.href = "login.html"; // Chuyển hướng đến trang login.html
+    }
+}
 
 joinRoomForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    const roomSelectcheck = document.getElementById('room');
+    const selectedRoom = roomSelectcheck.options[roomSelectcheck.selectedIndex];
+    if (!selectedRoom.value) {
+        alert('Vui lòng chọn phòng!');
+        return false;
+    };
+});
+
+roomSelect.addEventListener('change', function() {
+    roomSelect.querySelectorAll('option').forEach(option => {
+        option.removeAttribute('data-password');
+    });
     const username = document.querySelector('#username').value;
     const roomId = roomSelect.value;
     const roomOption = roomSelect.options[roomSelect.selectedIndex];
-    const roomUsed = roomOption.dataset.used === 'true';
     const roomPassword = roomOption.dataset.password;
-    if (roomUsed) {
-        // Nếu phòng đã được sử dụng, hiển thị ô nhập mật khẩu
+    const status = roomOption.getAttribute('data-status');
+
+    if (status === 'occupied') {
         passwordContainer.style.display = 'block';
-        if (passwordInput.value === roomPassword) {
-            window.location.href = `/chat.html?username=${username}&room=${roomId}&password=${roomPassword}`;
+        if (!passwordInput.value) {
+            alert('Vui lòng nhập mật khẩu để vào phòng');
         } else {
-            // Nếu mật khẩu sai, hiển thị thông báo lỗi
-            alert('Mật khẩu không đúng!');
+            submitButton.removeEventListener('click', handlePasswordSubmit);
+            submitButton.addEventListener('click', handlePasswordSubmit);
+
+            function handlePasswordSubmit(event) {
+                if (passwordInput.value === roomPassword) {
+                    window.location.href = `/chat.html?username=${username}&room=${roomId}&password=${roomPassword}`;
+                } else if (!passwordInput.value) {
+                    alert('Vui lòng nhập mật khẩu để vào phòng!');
+                } else { alert('Mật khẩu không đúng!'); }
+            }
         }
     } else {
-        // Nếu phòng chưa được sử dụng, ẩn ô nhập mật khẩu
         passwordContainer.style.display = 'none';
-        // Nếu phòng chưa được sử dụng, tạo mật khẩu mới và chuyển đến trang chat
         const newRoomPassword = generatePassword();
         roomOption.dataset.password = newRoomPassword;
-
-        window.location.href = `/chat.html?username=${username}&room=${roomId}&password=${newRoomPassword}`;
-        roomUsed = true;
+        submitButton.removeEventListener('click', handlePasswordSubmit);
+        submitButton.addEventListener('click', function(event) {
+            window.location.href = `/chat.html?username=${username}&room=${roomId}&password=${newRoomPassword}`;
+        });
     }
 });
 
 function generatePassword() {
-    // Tạo mật khẩu ngẫu nhiên
     return Math.random().toString(36).substring(2, 8);
 }

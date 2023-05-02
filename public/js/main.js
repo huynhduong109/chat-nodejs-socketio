@@ -23,6 +23,22 @@ socket.on('roomUsers', ({ room, users }) => {
 });
 
 
+// Lắng nghe sự kiện 'rooms' từ server và cập nhật giá trị của các option
+socket.on('rooms', (rooms) => {
+  rooms.forEach((roomUsers) => {
+      const roomOption = document.querySelector(`[value="${roomUsers.room}"]`);
+      if (roomOption) {
+          if (roomUsers.users.length > 0) {
+              // Phòng đã có người
+              roomOption.dataset.status = 'occupied';
+          } else {
+              // Phòng chưa có người
+              roomOption.dataset.status = 'available';
+          }
+      }
+  });
+});
+
 // Chat form
 const chatForm = document.getElementById("chat-form");
 // Form messages
@@ -34,12 +50,24 @@ chatForm.addEventListener('submit', (e) => {
     const inputMessage = document.getElementById('msg').value; // lấy nội dung từ phần tử textarea
     // Gửi tin nhắn lên server
     socket.emit('chatMessage', inputMessage);
-    // Xóa tin nhắn ở ô input
-    document.getElementById('msg').value = '';
-    document.getElementById('msg').blur();
+    const emojiArea = $('#msg').data('emojioneArea');
+    emojiArea.setText('');
 });
 
-
+socket.on('rooms', (rooms) => {
+  rooms.forEach((roomUsers) => {
+      const roomOption = document.querySelector(`[value="${roomUsers.room}"]`);
+      if (roomOption) {
+          if (roomUsers.users.length > 0) {
+              // Phòng đã có người
+              roomOption.dataset.status = 'occupied';
+          } else {
+              // Phòng chưa có người
+              roomOption.dataset.status = 'available';
+          }
+      }
+  });
+});
 
 // Nhận tin nhắn từ server
 socket.on('serverMessage', (msgObj) => {
@@ -55,27 +83,6 @@ socket.on('serverMessage', (msgObj) => {
     formMessage.appendChild(divElement);
 });
 
-// Khi kết nối với server thành công
-socket.on('connect', () => {
-    // Gửi yêu cầu lấy danh sách các phòng
-    socket.emit('getRooms');
-  });
-  
-  // Lắng nghe sự kiện trả về danh sách các phòng
-  socket.on('roomList', (rooms) => {
-    // Cập nhật trạng thái của các phòng trong form
-    const roomOptions = document.querySelectorAll('.room-option');
-    roomOptions.forEach((option) => {
-      const roomId = option.value;
-      const roomData = rooms.find((room) => room.id === roomId);
-      if (roomData) {
-        option.dataset.used = true;
-      } else {
-        option.dataset.used = false;
-      }
-    });
-  });
-
 // Gửi file
 function handleFileSelect(event) {
     const file = event.target.files[0];
@@ -87,8 +94,6 @@ function handleFileSelect(event) {
         socket.emit('chatMessage', inputMessage);
     };
 }
-
-
  
 // Rời phòng
 document.getElementById('leave-btn').addEventListener('click', () => {

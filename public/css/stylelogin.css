@@ -198,3 +198,63 @@ a:hover {
     cursor: pointer;
     display: block;
 }
+
+.signup__signInButton[disabled] {
+    opacity: 0.5;
+    /* giảm độ mờ của nút */
+    cursor: not-allowed;
+    /* thay đổi kiểu con trỏ chuột */
+    pointer-events: none;
+    /* ngăn chặn tất cả các sự kiện chuột */
+}
+
+.signup__signInButton[disabled]:hover {
+    opacity: 0.5;
+    /* giữ độ mờ khi rê chuột vào */
+    cursor: not-allowed;
+    /* giữ kiểu con trỏ chuột */
+    pointer-events: none;
+    /* giữ ngăn chặn tất cả các sự kiện chuột */
+}
+
+.password-input-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.password-input-container input {
+    margin-bottom: 10px;
+}
+
+.password-requirements {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: -16px;
+    margin-bottom: 21px;
+}
+
+.password-requirements p {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 300;
+    color: white;
+    margin-right: 5px;
+}
+
+.password-requirements .unmet {
+    color: red;
+}
+
+.password-requirements .met {
+    color: green;
+}
+
+.password-requirements .valid::before {
+    content: "Mật khẩu đúng!";
+    color: green;
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 10px;
+    display: block;
+}

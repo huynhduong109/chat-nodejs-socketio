@@ -1,10 +1,11 @@
-const moment = require('moment');
+const moment = require('moment-timezone');
 
-function formatMessage( user, msgContent ){
+function formatMessage(user, msgContent) {
+    const now = moment().tz('Asia/Ho_Chi_Minh');
     return {
-        user, 
+        user,
         msgContent,
-        time: moment().format('h:mm a')
+        time: now.format('h:mm a')
     }
 }
 

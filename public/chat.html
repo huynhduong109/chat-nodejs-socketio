@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
+    <link rel="icon" href="favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
@@ -34,7 +35,24 @@
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/emojionearea/3.4.2/emojionearea.min.js"></script>
                 <script>
                     $('#msg').emojioneArea({
-                        pickerPosition: 'top'
+                        pickerPosition: 'top',
+                        autoHideFilters: true,
+                        events: {
+                            keyup: function(editor, event) {
+                                try {
+                                    var emojiState = editor.html();
+                                    emojiState = emojiState.replace(/[\u007F-\uFFFF]/g, function(character) {
+                                        return "\\u" + ("0000" + character.charCodeAt(0).toString(16)).slice(-4);
+                                    });
+                                    var emojiStateJSON = JSON.stringify(emojiState);
+
+                                    localStorage.setItem('emojiState', emojiStateJSON);
+                                } catch (err) {
+                                    // Xử lý lỗi phân tích cú pháp của chuỗi JSON được lưu trữ trong local storage
+                                    console.error(err);
+                                }
+                            }
+                        }
                     });
                 </script>
                 <!-- Thêm cửa sổ tag -->
@@ -51,6 +69,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.11.0/qs.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="js/main.js"></script>
+    <script>
+        // Đặt thời gian chờ 5 giây
+        setInterval(function() {
+            localStorage.removeItem('recent_emojis');
+        }, 1000);
+    </script>
 </body>
 
 </html>
